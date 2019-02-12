@@ -96,9 +96,9 @@ $input = ! empty( $_POST['input'] )
 							 	</label>
 							</span>
 							<span class="option">
-								 <label for="output-FirePHP" onmousedown="this.querySelector('input').click()">
-							 		<input type="radio" name="output" value="FirePHP" id="output-FirePHP"<?php checked( 'FirePHP' ); ?>>
-								 	FirePHP
+								 <label for="output-javascriptconsole" onmousedown="this.querySelector('input').click()">
+							 		<input type="radio" name="output" value="javascriptconsole" id="output-javascriptconsole"<?php checked( 'javascriptconsole' ); ?>>
+								 	Javascript Console
 							 	</label>
 							</span>
 							<span class="option">

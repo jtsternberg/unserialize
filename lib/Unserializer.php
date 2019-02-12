@@ -36,6 +36,9 @@ class Unserializer {
 			case 'krumo':
 				$el = 'div';
 				break;
+			case 'javascriptconsole':
+				$el = 'blockquote';
+				break;
 		}
 
 		return $el;
@@ -59,6 +62,13 @@ class Unserializer {
 				break;
 			case 'krumo':
 				$output = $this->krumo();
+			case 'javascriptconsole':
+				$output = '
+					<script>window.unserializedData = '. $this->toJSON() .';</script>
+					<script>console.warn("window.unserializedData");</script>
+					<script>console.log(window.unserializedData);</script>
+					The unserialized data has been sent to your browser console.
+				';
 				break;
 		}
 
