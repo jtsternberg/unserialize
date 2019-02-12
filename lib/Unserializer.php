@@ -7,8 +7,9 @@
 
 namespace Jtsternberg\Unserialize;
 
-class Unserializer {
+use Symfony\Component\Yaml\Yaml;
 
+class Unserializer {
 
 	/**
 	 * The data to unserialize.
@@ -18,21 +19,37 @@ class Unserializer {
 	public $input;
 
 	/**
+	 * The unserialized data.
+	 *
+	 * @var string
+	 */
+	public $unserialized;
+
+	/**
 	 * The method of unserialization.
 	 *
 	 * @var string
 	 */
-	public $output;
+	public $method;
 
-	public function __construct( $input, $output ) {
+	/**
+	 * The formatted data.
+	 *
+	 * @var string
+	 */
+	public $formatted;
+
+	public function __construct( $input, $method ) {
 		$this->input  = $input;
-		$this->output = strtolower( $output );
-		$this->unserialized = self::maybeUnserialize( $this->input );
+		$this->method = strtolower( $method );
+		if ( $this->input ) {
+			$this->unserialized = self::maybeUnserialize( $this->input );
+		}
 	}
 
 	public function wrapperEl() {
 		$el = 'xmp';
-		switch ( $this->output ) {
+		switch ( $this->method ) {
 			case 'krumo':
 			case 'dbug':
 				$el = 'div';
@@ -45,39 +62,58 @@ class Unserializer {
 		return $el;
 	}
 
-	public function getOutput() {
-		$output = '';
+	public function canUnserialize() {
+		return ! empty( $this->unserialized );
+	}
 
-		switch ( $this->output ) {
-			case 'print_r':
-				$output = $this->printR();
-				break;
-			case 'var_dump':
-				$output = $this->varDump();
-				break;
-			case 'var_export':
-				$output = $this->varExport();
-				break;
-			case 'json':
-				$output = $this->toJSON();
-				break;
-			case 'krumo':
-				$output = $this->krumo();
-				break;
-			case 'dbug':
-				$output = $this->dbug();
-				break;
-			case 'javascriptconsole':
-				$output = '
-					<script>window.unserializedData = '. $this->toJSON() .';</script>
-					<script>console.warn("window.unserializedData");</script>
-					<script>console.log(window.unserializedData);</script>
-					The unserialized data has been sent to your browser console.
-				';
-				break;
+	public function hasOutput() {
+		$val = $this->getOutput();
+
+		return ! empty( $val );
+	}
+
+	public function getOutput() {
+		if ( $this->canUnserialize() && null === $this->formatted ) {
+
+			$this->formatted = '';
+
+			switch ( $this->method ) {
+				case 'print_r':
+					$this->formatted = $this->printR();
+					break;
+				case 'var_dump':
+					$this->formatted = $this->varDump();
+					break;
+				case 'var_export':
+					$this->formatted = $this->varExport();
+					break;
+				case 'json':
+					$this->formatted = $this->toJSON();
+					break;
+				case 'krumo':
+					$this->formatted = $this->krumo();
+					break;
+				case 'dbug':
+					$this->formatted = $this->dbug();
+					break;
+				case 'base64':
+					$this->formatted = $this->base64();
+					break;
+				case 'yaml':
+					$this->formatted = $this->yaml();
+					break;
+				case 'javascriptconsole':
+					$this->formatted = '
+						<script>window.unserializedData = '. $this->toJSON() .';</script>
+						<script>console.warn("window.unserializedData");</script>
+						<script>console.log(window.unserializedData);</script>
+						The unserialized data has been sent to your browser console.
+					';
+					break;
+			}
 		}
 
-		return $output;
+		return $this->formatted;
 	}
 
 	public function printR() {
@@ -137,6 +173,14 @@ class Unserializer {
 		ob_start();
 		new \dBug\dBug( $this->unserialized );
 		return ob_get_clean();
+	}
+
+	public function base64() {
+		return base64_encode( $this->input );
+	}
+
+	public function yaml() {
+		return Yaml::dump( $this->unserialized, 10, 3 );
 	}
 
 	/**

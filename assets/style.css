@@ -68,8 +68,8 @@ a {
 	height:300px;
 }
 
-#main input,
-#main button {
+input,
+button {
 	margin:0;
 	padding:3px;
 }
@@ -78,8 +78,12 @@ p {
 	margin-top:5px;
 }
 
-.f-label {
+.f-label, .i-label {
 	vertical-align:top;
+	font-weight: bold;
+}
+
+.f-label {
 	display:block;
 	width:100px;
 }
@@ -121,6 +125,15 @@ pre, xmp {
 
 .buttonline,.clear-left {
 	clear:left;
+}
+
+#footer {
+	clear: both;
+	font-size: .75em;
+	color: #666;
+	text-align: center;
+	border-top: dashed 1px #aaa;
+	margin: 40px 8px 0;
 }
 
 @media (max-width: 960px){

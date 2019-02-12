@@ -8,24 +8,36 @@ namespace Jtsternberg\Unserialize;
 
 require_once __DIR__ . '/lib/autoloader.php';
 
-$output = '';
+$data = new Data( $_POST );
+$unserializer = new Unserializer(
+	Formatter::parse( $data->get( 'input' ), $data->get( 'input-type' ) ),
+	$data->get( 'method' )
+);
+
 $bodyClass = [];
-if ( ! empty( $_POST['output'] ) && ! empty( $_POST['input'] ) ) {
-	$unserializer = new Unserializer( $_POST['input'], $_POST['output'] );
-	$output = $unserializer->getOutput();
-	$bodyClass[] = 'submitted';
-}
-$bodyClass[] = empty( $output ) ? 'no-results' : 'has-results';
+$bodyClass[] = $unserializer->hasOutput() ? 'has-results' : 'no-results';
 
-function checked( $key, $default = false ) {
-	echo ( isset( $_POST['output'] ) && $key === $_POST['output'] ) || ( $default && empty( $_POST['output'] ) )
-		? ' checked="checked"'
-		: '';
+function checked( $key, $val, $default = false ) {
+	echo ( isset( $val ) && $key === $val ) || ( $default && empty( $val ) )
+	? ' checked="checked"'
+	: '';
 }
 
-$input = ! empty( $_POST['input'] )
-	? htmlspecialchars( $_POST['input'], ENT_QUOTES, 'UTF-8' )
-	: 'a:2:{i:0;s:12:"Sample array";i:1;a:2:{i:0;s:5:"Apple";i:1;s:6:"Orange";}}';
+function actionButtons( $unserializer ) {
+	if ( in_array( $unserializer->method, [ 'print_r', 'var_dump','var_export','json','base64' ], true ) ) : ?>
+		<div class="buttonline">
+			<p>
+				<button onmousedown="window.unserializer.download( document.getElementById('output-formatted').innerText, '<?php echo $unserializer->method; ?>' )" type="button">Download Output</button>&nbsp;
+				<button onmousedown="window.unserializer.copy( document.getElementById('output-formatted').innerText )" type="button">Copy Output</button>
+			</p>
+		</div>
+	<?php endif;
+}
+
+$input = 'a:2:{i:0;s:12:"Sample array";i:1;a:2:{i:0;s:5:"Apple";i:1;s:6:"Orange";}}';
+$input = $data->get( 'input', $input, true );
+$input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +52,7 @@ $input = ! empty( $_POST['input'] )
 	<link rel="stylesheet" type="text/css" href="assets/style.css?v=<?php echo time(); ?>" media="screen">
 </head>
 
-<body class="<?php echo implode( ' ', $bodyClass ); ?>">
+<body class="<?php echo $unserializer->hasOutput() ? 'has-results' : 'no-results'; ?>">
 	<p class="center">
 		<a href="<?php echo $_SERVER['REQUEST_URI']; ?>">
 			<img src="assets/logo.png" id="logo-img" alt="Unserialize" width="516" height="65">
@@ -57,56 +69,91 @@ $input = ! empty( $_POST['input'] )
 				<form method="post" id="unserialize" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 
 					<div class="dataline">
-						<label for="input" class="f-label">Input:</label>
+						<label for="input" class="i-label">Input:</label>&nbsp;
+							<small>
+								<span class="types">
+									<span class="option">
+										<label for="input-serialized">
+											<input type="radio" name="input-type" value="serialized" id="input-serialized"<?php checked( 'serialized', $data->get( 'input-type' ), true ); ?>>
+											Serialized/Base64
+										</label>
+									</span>
+									<span class="option">
+										<label for="input-JSON">
+											<input type="radio" name="input-type" value="JSON" id="input-JSON"<?php checked( 'JSON', $data->get( 'input-type' ) ); ?>>
+											JSON
+										</label>
+									</span>
+									<span class="option">
+										<label for="input-yaml">
+											<input type="radio" name="input-type" value="yaml" id="input-yaml"<?php checked( 'yaml', $data->get( 'input-type' ) ); ?>>
+											Yaml
+										</label>
+									</span>
+								</span>
+							</small>
 						<textarea onfocus="this.select()" name="input" id="input"><?php echo $input; ?></textarea>
 					</div>
-
 					<div class="optionsline clear-left">
-						<label class="f-label">Output:</label>
-						<span class="types">
-							<span class="option">
-								 <label for="output-print_r" onmousedown="this.querySelector('input').click()">
-							 		<input type="radio" name="output" value="print_r" id="output-print_r"<?php checked( 'print_r', true ); ?>>
-								 	print_r
-							 	</label>
+						<label class="i-label">Output:</label>&nbsp;
+						<small>
+							<span class="types">
+								<span class="option">
+									<label for="method-print_r" onmousedown="this.querySelector('input').click()">
+										<input type="radio" name="method" value="print_r" id="method-print_r"<?php checked( 'print_r', $data->get( 'method' ), true ); ?>>
+										print_r
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-var_dump" onmousedown="this.querySelector('input').click()">
+										<input type="radio" name="method" value="var_dump" id="method-var_dump"<?php checked( 'var_dump', $data->get( 'method' ) ); ?>>
+										var_dump
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-var_export" onmousedown="this.querySelector('input').click()">
+										<input type="radio" name="method" value="var_export" id="method-var_export"<?php checked( 'var_export', $data->get( 'method' ) ); ?>>
+										var_export
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-JSON" onmousedown="this.querySelector('input').click()">
+										<input type="radio" name="method" value="JSON" id="method-JSON"<?php checked( 'JSON', $data->get( 'method' ) ); ?>>
+										JSON
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-base64" onmousedown="this.querySelector('input').click()">
+										<input type="radio" name="method" value="base64" id="method-base64"<?php checked( 'base64', $data->get( 'method' ) ); ?>>
+										base64
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-yaml" onmousedown="this.querySelector('input').click()">
+										<input type="radio" name="method" value="yaml" id="method-yaml"<?php checked( 'yaml', $data->get( 'method' ) ); ?>>
+										Yaml
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-Krumo" onmousedown="this.querySelector('input').click()">
+										<input type="radio" name="method" value="Krumo" id="method-Krumo"<?php checked( 'Krumo', $data->get( 'method' ) ); ?>>
+										Krumo
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-javascriptconsole" onmousedown="this.querySelector('input').click()">
+										<input type="radio" name="method" value="javascriptconsole" id="method-javascriptconsole"<?php checked( 'javascriptconsole', $data->get( 'method' ) ); ?>>
+										Javascript Console
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-dBug" onmousedown="this.querySelector('input').click()">
+										<input type="radio" name="method" value="dBug" id="method-dBug"<?php checked( 'dBug', $data->get( 'method' ) ); ?>>
+										dBug
+									</label>
+								</span>
 							</span>
-							<span class="option">
-								 <label for="output-var_dump" onmousedown="this.querySelector('input').click()">
-							 		<input type="radio" name="output" value="var_dump" id="output-var_dump"<?php checked( 'var_dump' ); ?>>
-								 	var_dump
-							 	</label>
-							</span>
-							<span class="option">
-								 <label for="output-var_export" onmousedown="this.querySelector('input').click()">
-							 		<input type="radio" name="output" value="var_export" id="output-var_export"<?php checked( 'var_export' ); ?>>
-								 	var_export
-							 	</label>
-							</span>
-							<span class="option">
-								 <label for="output-JSON" onmousedown="this.querySelector('input').click()">
-							 		<input type="radio" name="output" value="JSON" id="output-JSON"<?php checked( 'JSON' ); ?>>
-								 	JSON
-							 	</label>
-							</span>
-							<span class="option">
-								 <label for="output-Krumo" onmousedown="this.querySelector('input').click()">
-							 		<input type="radio" name="output" value="Krumo" id="output-Krumo"<?php checked( 'Krumo' ); ?>>
-								 	Krumo
-							 	</label>
-							</span>
-							<span class="option">
-								 <label for="output-javascriptconsole" onmousedown="this.querySelector('input').click()">
-							 		<input type="radio" name="output" value="javascriptconsole" id="output-javascriptconsole"<?php checked( 'javascriptconsole' ); ?>>
-								 	Javascript Console
-							 	</label>
-							</span>
-							<span class="option">
-								 <label for="output-dBug" onmousedown="this.querySelector('input').click()">
-							 		<input type="radio" name="output" value="dBug" id="output-dBug"<?php checked( 'dBug' ); ?>>
-								 	dBug
-							 	</label>
-							</span>
-						</span>
+						</small>
 					</div>
 
 					<div class="newline">
@@ -116,26 +163,23 @@ $input = ! empty( $_POST['input'] )
 							<button onmousedown="this.click()" type="submit" id="submit">Unserialize</button>
 						</p>
 					</div>
-					<?php if ( $output && in_array( $unserializer->output, [ 'print_r', 'var_dump','var_export','json' ], true ) ) : ?>
-						<div class="buttonline">
-							<p>
-								<button onmousedown="window.unserializer.download( document.getElementById('output-formatted').innerText, '<?php echo $unserializer->output; ?>' )" type="button">Download Output</button>&nbsp;
-								<button onmousedown="window.unserializer.copy( document.getElementById('output-formatted').innerText )" type="button">Copy Output</button>
-							</p>
-						</div>
-					<?php endif; ?>
+					<?php actionButtons( $unserializer ); ?>
 				</form>
 			</div>
 		</div>
-		<?php if ( $output ) : ?>
-			<div id="output"><<?php echo $unserializer->wrapperEl(); ?> id="output-formatted"><?php echo $output; ?></<?php echo $unserializer->wrapperEl(); ?>></div>
-		<?php else : ?>
-			<br>
-			<h2>PHP and JSON Unserializer</h2>
-			<p>A common problem: you have a serialized PHP or JSON string, maybe even base64 encoded, but what you really want is an easy-to-read unserialized version. <em>Unserialize</em> is the solution. Simply paste in your serialized string, click "Unserialize", and we'll display your unserialized text in an easy-to-read format.</p>
-		<?php endif; ?>
-	</div>
+		<?php if ( $unserializer->hasOutput() ) : ?>
+			<div id="output"><<?php echo $unserializer->wrapperEl(); ?> id="output-formatted"><?php echo $unserializer->getOutput(); ?></<?php echo $unserializer->wrapperEl(); ?>></div>
+			<?php actionButtons( $unserializer ); ?>
+			<?php else : ?>
+				<br>
+				<h2>PHP/JSON/YAML Unserializer</h2>
+				<p>A common problem: you have a serialized PHP or JSON string, maybe even base64 encoded, but what you really want is an easy-to-read unserialized version. <em>Unserialize</em> is the solution. Simply paste in your serialized string, click "Unserialize", and we'll display your unserialized text in an easy-to-read format.</p>
+			<?php endif; ?>
+		</div>
 
-	<script type="text/javascript" src="assets/script.js?v=<?php echo time(); ?>"></script>
-</body>
-</html>
+		<div id="footer">
+			<a href="https://github.com/jtsternberg/unserialize">Find me on github</a>
+		</div>
+		<script type="text/javascript" src="assets/script.js?v=<?php echo time(); ?>"></script>
+	</body>
+	</html>

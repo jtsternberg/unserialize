@@ -12,7 +12,8 @@
     "require": {
         "php": ">7.0",
         "kktsvetkov/krumo": "^0.4.0",
-        "kolanich/dbug": "^1.3"
+        "kolanich/dbug": "^1.3",
+        "symfony/yaml": "^4.2"
     },
     "autoload": {
         "psr-4":    {
