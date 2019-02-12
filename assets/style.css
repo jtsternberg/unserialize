@@ -1,193 +1,165 @@
 * {
-margin:0;
-padding:0;
+	margin:0;
+	padding:0;
 }
 
 body {
-font:.8em Verdana, Arial, Sans-Serif;
-line-height:1.6em;
-margin:20px 0 10px;
+	font:.8em Verdana, Arial, Sans-Serif;
+	line-height:1.6em;
+	margin:20px 0 10px;
 }
 
 #wrap {
-width:960px;
-margin:0 auto;
+	width:960px;
+	margin:0 auto;
 }
 
 #main {
-background:#FFF;
-color:#666;
-margin:25px 0 15px;
+	background:#FFF;
+	color:#666;
+	margin:25px 0 15px;
+}
+
+form {
+	overflow: hidden;
 }
 
 #leftside {
-color:#666;
-background:#FFF;
+	color:#666;
+	background:#FFF;
 }
 
-#footer {
-clear:both;
-font-size:75%;
-color:#666;
-text-align:center;
-border-top:dashed 1px #AAA;
-margin:40px 8px 0;
+#output {
+	clear:both;
+	background: #f9f9f9;
+	padding: 20px;
+	border: 3px dotted #ccc
 }
 
 a {
-color:#0066B3;
-text-decoration:none;
+	color:#0066B3;
+	text-decoration:none;
 }
 
 #leftside textarea {
-margin-bottom:15px;
-vertical-align:top;
-border:1px solid #bbb;
-width:540px;
-height:180px;
-float:left;
+	clear: both;
+	margin-top:5px;
+	margin-bottom:15px;
+	vertical-align:top;
+	border:1px solid #bbb;
+	width:calc( 100% - 2px );
+	height:300px;
 }
 
-#main input {
-margin:0;
-padding:3px;
+.has-results #leftside textarea {
+	height:50px;
+}
+
+.has-results #leftside form:focus textarea,
+.has-results #leftside textarea:focus {
+	height:300px;
+}
+
+#main input,
+#main button {
+	margin:0;
+	padding:3px;
 }
 
 p {
-margin-top:5px;
+	margin-top:5px;
 }
 
 .f-label {
-vertical-align:top;
-display:block;
-width:100px;
-float:left;
+	vertical-align:top;
+	display:block;
+	width:100px;
 }
 
 .newline {
-margin-bottom:15px;
-clear:left;
-}
-
-@media (min-width: 961px) {
-    #secret {
-        float: right;
-    }
-    
-    #secret, .adslot_1 {
-        width: 300px;
-        height: 265px;
-    }
-}
-
-#secret-2 {
-    display: none;
+	margin-bottom:15px;
+	clear:left;
 }
 
 .center {
-    text-align: center;
+	text-align: center;
 }
 
 .optionsline span {
-clear:left;
-vertical-align:top;
-}
-
-.space {
-width:100px;
-float:left;
+	clear:left;
+	vertical-align:top;
 }
 
 .types label {
-margin-right:10px;
+	margin-right:10px;
 }
 
-pre {
-font-size:110%;
-padding-top:25px;
-color:#111;
+pre, xmp {
+	font-size:110%;
+	color:#111;
 }
 
 #submit {
-border:1px solid #bbb;
-float:left;
-margin-right:20px!important;
-position:relative;
-z-index:1000;
+	position:relative;
+	z-index:1000;
 }
 
 .addthis_toolbox {
-position:relative;
-top:4px;
+	position:relative;
+	top:4px;
 }
 
 .buttonline,.clear-left {
-clear:left;
+	clear:left;
 }
 
 @media (max-width: 960px){
-    #secret, .adslot_1 {
-        display: none;
-    }
-    #secret-2 {
-        display: block;
-        float: left;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    #logo-img {
-        width: 60%;
-        height: auto;
-    }
-    .f-label {
-        margin: 0;
-        margin-bottom: 1%;
-        margin-left: 1%;
-        padding: 0;
-        float: none;
-        font-size: 20px;
-    }
-    #wrap {
-        width: 100%;
-    }
-    #leftside textarea {
-        width: 98%;
-        margin-left: 1%;
-        margin-right: 1%;
-    }
-    .types{
-        font-size: 15px;
-        line-height: 2em;
-    }
-    .option {
-        white-space: nowrap;
-    }
-    .space {
-        width: 0;
-    }
-    .buttonline #submit{
-        margin-left: 1%;    
-        text-align: left;
-    }
-    p {
-        font-size: 12px;
-        margin-left: 1%;
-        margin-right: 1%;
-    }
-    pre {
-        margin-left: 1%;
-        margin-right: 1%;
-        width: 98%;
-        white-space: pre-wrap;
-    }
-    #footer {
-        font-size: 10px;
-    }
+	#logo-img {
+		width: 60%;
+		height: auto;
+	}
+	.f-label {
+		margin: 0;
+		margin-bottom: 1%;
+		margin-left: 1%;
+		padding: 0;
+		font-size: 20px;
+	}
+	#wrap {
+		width: 100%;
+	}
+	#leftside textarea {
+		width: 98%;
+		margin-left: 1%;
+		margin-right: 1%;
+	}
+	.types{
+		font-size: 15px;
+		line-height: 2em;
+	}
+	.option {
+		white-space: nowrap;
+	}
+	.buttonline #submit{
+		margin-left: 1%;
+		text-align: left;
+	}
+	p {
+		font-size: 12px;
+		margin-left: 1%;
+		margin-right: 1%;
+	}
+	pre, xmp {
+		margin-left: 1%;
+		margin-right: 1%;
+		width: 98%;
+		white-space: pre-wrap;
+	}
 
-    @media (max-width: 500px){
-        #logo-img {
-            width: 95%;
-            height: auto;
-        }
-    }
+	@media (max-width: 500px){
+		#logo-img {
+			width: 95%;
+			height: auto;
+		}
+	}
 }

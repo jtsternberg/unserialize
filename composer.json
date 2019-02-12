@@ -3,13 +3,19 @@
     "description": "Make your own www.unserialize.com",
     "type": "project",
     "license": "mit",
-    "require": {
-        "php": "7.0"
-    },
     "authors": [
         {
             "name": "Justin Sternberg",
             "email": "justin@dsgnwrks.pro"
         }
-    ]
+    ],
+    "require": {
+        "php": ">7.0",
+        "kktsvetkov/krumo": "^0.4.0"
+    },
+    "autoload": {
+        "psr-4":    {
+            "Jtsternberg\\Unserialize\\": "lib/"
+        }
+    }
 }
