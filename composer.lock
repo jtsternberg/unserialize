@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a472f0bcddc23ffe156bd9b46fb11243",
+    "content-hash": "f5ac46c7575c35e991b3db7216d52a4e",
     "packages": [
         {
             "name": "kktsvetkov/krumo",
@@ -54,6 +54,61 @@
                 "var_export"
             ],
             "time": "2017-11-21T10:11:07+00:00"
+        },
+        {
+            "name": "kolanich/dbug",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KOLANICH/dBug.git",
+                "reference": "df5f54c528c2b2fac52e9d638e5b9ad2627465bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KOLANICH/dBug/zipball/df5f54c528c2b2fac52e9d638e5b9ad2627465bb",
+                "reference": "df5f54c528c2b2fac52e9d638e5b9ad2627465bb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "suggest": {
+                "ext-Reflection": "to show protected and private info (now is only implemented for Exceptions)"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "dBug.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "KOLANICH",
+                    "homepage": "https://github.com/KOLANICH",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Kwaku 'ospinto' Otchere",
+                    "email": "ospinto@hotmail.com",
+                    "homepage": "http://dbug.ospinto.com/",
+                    "role": "Former author"
+                }
+            ],
+            "description": "A debug output library which is used to visualize different datatypes.",
+            "homepage": "https://github.com/KOLANICH/dBug",
+            "keywords": [
+                "ColdFusion",
+                "cfdump",
+                "debug",
+                "output",
+                "table",
+                "visualization"
+            ],
+            "time": "2015-03-17T17:52:37+00:00"
         }
     ],
     "packages-dev": [],

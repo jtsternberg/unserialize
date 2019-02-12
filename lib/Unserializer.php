@@ -26,14 +26,15 @@ class Unserializer {
 
 	public function __construct( $input, $output ) {
 		$this->input  = $input;
-		$this->output = $output;
+		$this->output = strtolower( $output );
 		$this->unserialized = self::maybeUnserialize( $this->input );
 	}
 
 	public function wrapperEl() {
 		$el = 'xmp';
-		switch ( strtolower( $this->output ) ) {
+		switch ( $this->output ) {
 			case 'krumo':
+			case 'dbug':
 				$el = 'div';
 				break;
 			case 'javascriptconsole':
@@ -47,7 +48,7 @@ class Unserializer {
 	public function getOutput() {
 		$output = '';
 
-		switch ( strtolower( $this->output ) ) {
+		switch ( $this->output ) {
 			case 'print_r':
 				$output = $this->printR();
 				break;
@@ -62,6 +63,10 @@ class Unserializer {
 				break;
 			case 'krumo':
 				$output = $this->krumo();
+				break;
+			case 'dbug':
+				$output = $this->dbug();
+				break;
 			case 'javascriptconsole':
 				$output = '
 					<script>window.unserializedData = '. $this->toJSON() .';</script>
@@ -125,6 +130,12 @@ class Unserializer {
 	public function krumo() {
 		ob_start();
 		krumo( $this->unserialized );
+		return ob_get_clean();
+	}
+
+	public function dbug() {
+		ob_start();
+		new \dBug\dBug( $this->unserialized );
 		return ob_get_clean();
 	}
 
