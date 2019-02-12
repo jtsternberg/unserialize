@@ -141,6 +141,7 @@ class Unserializer {
 
 	/**
 	 * Unserialize value only if it was serialized.
+	 * Thank you WordPress.
 	 *
 	 * @since 1.0.0
 	 *
@@ -156,6 +157,7 @@ class Unserializer {
 
 	/**
 	 * Check value to find if it was serialized.
+	 * Thank you WordPress.
 	 *
 	 * If $data is not an string, then returned value will always be false.
 	 * Serialized data is always a string.

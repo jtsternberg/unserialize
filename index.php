@@ -11,22 +11,18 @@ require_once __DIR__ . '/lib/autoloader.php';
 $output = '';
 $bodyClass = [];
 if ( ! empty( $_POST['output'] ) && ! empty( $_POST['input'] ) ) {
-	// $posted = $_POST;
 	$unserializer = new Unserializer( $_POST['input'], $_POST['output'] );
 	$output = $unserializer->getOutput();
-	// die( '<xmp>'. print_r( get_defined_vars(), true ) .'</xmp>' );
 	$bodyClass[] = 'submitted';
 }
 $bodyClass[] = empty( $output ) ? 'no-results' : 'has-results';
 
-// echo '<xmp>'. __LINE__ .') $_POST[output]: '. print_r( $_POST['output'], true ) .'</xmp>';
 function checked( $key, $default = false ) {
 	echo ( isset( $_POST['output'] ) && $key === $_POST['output'] ) || ( $default && empty( $_POST['output'] ) )
 		? ' checked="checked"'
 		: '';
 }
 
-// echo '<xmp>'. __LINE__ .') $_POST[input]: '. print_r( $_POST['input'], true ) .'</xmp>';
 $input = ! empty( $_POST['input'] )
 	? htmlspecialchars( $_POST['input'], ENT_QUOTES, 'UTF-8' )
 	: 'a:2:{i:0;s:12:"Sample array";i:1;a:2:{i:0;s:5:"Apple";i:1;s:6:"Orange";}}';
@@ -50,6 +46,9 @@ $input = ! empty( $_POST['input'] )
 			<img src="assets/logo.png" id="logo-img" alt="Unserialize" width="516" height="65">
 		</a>
 	</p>
+	<p class="center">
+		<small>Thank you to the authors of <a href="https://www.unserialize.com">www.unserialize.com</a> for the inspiration.</small>
+	</p>
 
 	<div id="wrap">
 		<div id="main">
@@ -59,7 +58,7 @@ $input = ! empty( $_POST['input'] )
 
 					<div class="dataline">
 						<label for="input" class="f-label">Input:</label>
-						<textarea name="input" id="input"><?php echo $input; ?></textarea>
+						<textarea onfocus="this.select()" name="input" id="input"><?php echo $input; ?></textarea>
 					</div>
 
 					<div class="optionsline clear-left">
@@ -114,7 +113,7 @@ $input = ! empty( $_POST['input'] )
 					</div>
 					<div class="buttonline">
 						<p>
-							<input onmousedown="this.click()" type="submit" value="Unserialize" id="submit">
+							<button onmousedown="this.click()" type="submit" id="submit">Unserialize</button>
 						</p>
 					</div>
 					<?php if ( $output && in_array( $unserializer->output, [ 'print_r', 'var_dump','var_export','json' ], true ) ) : ?>
