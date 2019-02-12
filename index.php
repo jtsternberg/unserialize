@@ -117,10 +117,10 @@ $input = ! empty( $_POST['input'] )
 							<input onmousedown="this.click()" type="submit" value="Unserialize" id="submit">
 						</p>
 					</div>
-					<?php if ( $output ) : ?>
+					<?php if ( $output && in_array( $unserializer->output, [ 'print_r', 'var_dump','var_export','json' ], true ) ) : ?>
 						<div class="buttonline">
 							<p>
-								<button onmousedown="window.unserializer.download( document.getElementById('output-formatted').innerText )" type="button">Download Output</button>&nbsp;
+								<button onmousedown="window.unserializer.download( document.getElementById('output-formatted').innerText, '<?php echo $unserializer->output; ?>' )" type="button">Download Output</button>&nbsp;
 								<button onmousedown="window.unserializer.copy( document.getElementById('output-formatted').innerText )" type="button">Copy Output</button>
 							</p>
 						</div>

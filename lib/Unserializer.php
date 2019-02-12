@@ -120,7 +120,7 @@ class Unserializer {
 			$output
 		);
 
-		return $output;
+		return "<?php\n{$output};";
 	}
 
 	public function toJSON() {

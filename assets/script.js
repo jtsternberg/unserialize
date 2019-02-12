@@ -25,10 +25,22 @@ window.unserializer = window.unserializer || {};
 		throw new Error();
 	};
 
-	app.download = (txt, fileName) => {
+	app.download = (txt, type) => {
 		var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(txt);
 		const el = document.createElement('a');
-		fileName = (fileName || 'output-' + (new Date()).getTime()) + '.json';
+		var ext = 'json';
+
+		switch( type ) {
+			case 'print_r':
+			case 'var_dump':
+				ext = 'txt';
+				break;
+			case 'var_export':
+				ext = 'php';
+				break;
+		}
+
+		var fileName = 'output-' + (new Date()).getTime() + '.' + ext;
 		el.setAttribute('href', dataStr);
 		el.setAttribute('download', fileName);
 		document.body.appendChild(el);
