@@ -3,4 +3,4 @@ Clone it down, `composer install`, and replace `www.unserialize.com` with your o
 
 ---
 <br><br>
-![Screenshot of local site](assets/screenshot.png)
+[![Screenshot of local site](assets/screenshot.png)](assets/screenshot.png)
