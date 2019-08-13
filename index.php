@@ -14,9 +14,6 @@ $unserializer = new Unserializer(
 	$data->get( 'method' )
 );
 
-$bodyClass = [];
-$bodyClass[] = $unserializer->hasOutput() ? 'has-results' : 'no-results';
-
 function checked( $key, $val, $default = false ) {
 	echo ( isset( $val ) && $key === $val ) || ( $default && empty( $val ) )
 	? ' checked="checked"'
@@ -27,8 +24,8 @@ function actionButtons( $unserializer ) {
 	if ( in_array( $unserializer->method, [ 'print_r', 'var_dump','var_export','json','base64' ], true ) ) : ?>
 		<div class="buttonline">
 			<p>
-				<button onmousedown="window.unserializer.download( document.getElementById('output-formatted').innerText, '<?php echo $unserializer->method; ?>' )" type="button">Download Output</button>&nbsp;
-				<button onmousedown="window.unserializer.copy( document.getElementById('output-formatted').innerText )" type="button">Copy Output</button>
+				<button onmouseup="window.unserializer.download( document.getElementById('output-formatted').innerText, '<?php echo $unserializer->method; ?>' )" type="button">Download Output</button>&nbsp;
+				<button onmouseup="window.unserializer.copy( document.getElementById('output-formatted').innerText )" type="button">Copy Output</button>
 			</p>
 		</div>
 	<?php endif;
@@ -99,55 +96,55 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 						<small>
 							<span class="types">
 								<span class="option">
-									<label for="method-print_r" onmousedown="this.querySelector('input').click()">
+									<label for="method-print_r" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="print_r" id="method-print_r"<?php checked( 'print_r', $data->get( 'method' ), true ); ?>>
 										print_r
 									</label>
 								</span>
 								<span class="option">
-									<label for="method-var_dump" onmousedown="this.querySelector('input').click()">
+									<label for="method-var_dump" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="var_dump" id="method-var_dump"<?php checked( 'var_dump', $data->get( 'method' ) ); ?>>
 										var_dump
 									</label>
 								</span>
 								<span class="option">
-									<label for="method-var_export" onmousedown="this.querySelector('input').click()">
+									<label for="method-var_export" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="var_export" id="method-var_export"<?php checked( 'var_export', $data->get( 'method' ) ); ?>>
 										var_export
 									</label>
 								</span>
 								<span class="option">
-									<label for="method-JSON" onmousedown="this.querySelector('input').click()">
+									<label for="method-JSON" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="JSON" id="method-JSON"<?php checked( 'JSON', $data->get( 'method' ) ); ?>>
 										JSON
 									</label>
 								</span>
 								<span class="option">
-									<label for="method-base64" onmousedown="this.querySelector('input').click()">
+									<label for="method-base64" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="base64" id="method-base64"<?php checked( 'base64', $data->get( 'method' ) ); ?>>
 										base64
 									</label>
 								</span>
 								<span class="option">
-									<label for="method-yaml" onmousedown="this.querySelector('input').click()">
+									<label for="method-yaml" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="yaml" id="method-yaml"<?php checked( 'yaml', $data->get( 'method' ) ); ?>>
 										Yaml
 									</label>
 								</span>
 								<span class="option">
-									<label for="method-Krumo" onmousedown="this.querySelector('input').click()">
+									<label for="method-Krumo" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="Krumo" id="method-Krumo"<?php checked( 'Krumo', $data->get( 'method' ) ); ?>>
 										Krumo
 									</label>
 								</span>
 								<span class="option">
-									<label for="method-javascriptconsole" onmousedown="this.querySelector('input').click()">
+									<label for="method-javascriptconsole" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="javascriptconsole" id="method-javascriptconsole"<?php checked( 'javascriptconsole', $data->get( 'method' ) ); ?>>
 										Javascript Console
 									</label>
 								</span>
 								<span class="option">
-									<label for="method-dBug" onmousedown="this.querySelector('input').click()">
+									<label for="method-dBug" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="dBug" id="method-dBug"<?php checked( 'dBug', $data->get( 'method' ) ); ?>>
 										dBug
 									</label>
@@ -160,7 +157,7 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 					</div>
 					<div class="buttonline">
 						<p>
-							<button onmousedown="this.click()" type="submit" id="submit">Unserialize</button>
+							<button onmouseup="this.click()" type="submit" id="submit">Unserialize</button>
 						</p>
 					</div>
 					<?php actionButtons( $unserializer ); ?>
