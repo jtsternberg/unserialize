@@ -54,6 +54,11 @@ class Unserializer {
 			case 'dbug':
 				$el = 'div';
 				break;
+			case 'var_dump':
+				if ( false !== strpos( $this->getOutput(), 'xdebug' ) ) {
+					$el = 'div';
+				}
+				break;
 			case 'javascriptconsole':
 				$el = 'blockquote';
 				break;
