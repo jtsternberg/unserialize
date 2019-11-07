@@ -59,6 +59,10 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 		<small>Thank you to the authors of <a href="https://www.unserialize.com">www.unserialize.com</a> for the inspiration.</small>
 	</p>
 
+	<p class="center">
+		<small><em>Go to <a href="/phppad/">PHPPad</a> instead.</em></small>
+	</p>
+
 	<div id="wrap">
 		<div id="main">
 			<div id="leftside">
