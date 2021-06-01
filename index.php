@@ -6,6 +6,8 @@
  */
 namespace Jtsternberg\Unserialize;
 
+ini_set( 'error_log', __DIR__ . '/debug.log' );
+
 require_once __DIR__ . '/lib/autoloader.php';
 
 $data = new Data( $_POST );
