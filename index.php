@@ -23,7 +23,7 @@ function checked( $key, $val, $default = false ) {
 }
 
 function actionButtons( $unserializer ) {
-	if ( in_array( $unserializer->method, [ 'print_r', 'var_dump','var_export','json','base64' ], true ) ) : ?>
+	if ( in_array( $unserializer->method, [ 'print_r','var_dump','var_export','json','csv','base64' ], true ) ) : ?>
 		<div class="buttonline">
 			<p>
 				<button onmouseup="window.unserializer.download( document.getElementById('output-formatted').innerText, '<?php echo $unserializer->method; ?>' )" type="button">Download Output</button>&nbsp;
@@ -88,6 +88,12 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 										</label>
 									</span>
 									<span class="option">
+										<label for="input-CSV">
+											<input type="radio" name="input-type" value="CSV" id="input-CSV"<?php checked( 'CSV', $data->get( 'input-type' ) ); ?>>
+											CSV
+										</label>
+									</span>
+									<span class="option">
 										<label for="input-yaml">
 											<input type="radio" name="input-type" value="yaml" id="input-yaml"<?php checked( 'yaml', $data->get( 'input-type' ) ); ?>>
 											Yaml
@@ -123,6 +129,12 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 									<label for="method-JSON" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="JSON" id="method-JSON"<?php checked( 'JSON', $data->get( 'method' ) ); ?>>
 										JSON
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-CSV" onmouseup="this.querySelector('input').click()">
+										<input type="radio" name="method" value="CSV" id="method-CSV"<?php checked( 'CSV', $data->get( 'method' ) ); ?>>
+										CSV
 									</label>
 								</span>
 								<span class="option">

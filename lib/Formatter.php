@@ -24,6 +24,18 @@ class Formatter {
 					case 'yaml':
 						$input = serialize( Yaml::parse( $input ) );
 						break;
+					case 'csv':
+						$tabs  = strpos( $input, "\t" );
+						$delim = false !== $tabs ? "\t" : ',';
+						$fp    = fopen( 'php://temp', 'r+' );
+						fputs( $fp, $input );
+						rewind( $fp );
+						$csv = [];
+						while ( ( $data = fgetcsv( $fp, 0, $delim ) ) !== FALSE ) {
+						    $csv[] = $data;
+						}
+						$input = $csv;
+						break;
 				}
 			}
 		}

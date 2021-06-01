@@ -95,6 +95,9 @@ class Unserializer {
 				case 'json':
 					$this->formatted = $this->toJSON();
 					break;
+				case 'csv':
+					$this->formatted = $this->toCSV();
+					break;
 				case 'krumo':
 					$this->formatted = $this->krumo();
 					break;
@@ -166,6 +169,21 @@ class Unserializer {
 
 	public function toJSON() {
 		return json_encode( $this->unserialized, JSON_PRETTY_PRINT );
+	}
+
+	public function toCSV() {
+		$values = self::isMultiDimensional( $this->unserialized )
+			? self::arrayFlatten( $this->unserialized )
+			: $this->unserialized;
+
+		$csv = fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
+
+		foreach ( array_values( $values ) as $row ) {
+			fputcsv( $csv, $row );
+		}
+		rewind( $csv );
+
+		return stream_get_contents( $csv );
 	}
 
 	public function krumo() {
@@ -273,5 +291,48 @@ class Unserializer {
 				return (bool) preg_match( "/^{$token}:[0-9.E-]+;$end/", $data );
 		}
 		return false;
+	}
+
+	/**
+	 * Determine if array is multi-dimensional.
+	 *
+	 * @since  1.1.0
+	 *
+	 * @param  array $array Array to check.
+	 *
+	 * @return bool         Whether given array is multi-dimensional.
+	 */
+	public static function isMultiDimensional( $array ) {
+		foreach ( (array) $array as $key => $value ) {
+			foreach ( $value as $vkey => $vvalue ) {
+				if ( $vvalue && ! is_scalar( $vvalue ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Flattens a multi-dimensional array.
+	 *
+	 * @since  1.1.0
+	 *
+	 * @param  array $array Array to flatten.
+	 *
+	 * @return array        Flattened array.
+	 */
+	public static function arrayFlatten( $array ) {
+		$return = [];
+		foreach ( $array as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$return = array_merge( $return, self::arrayFlatten( $value ) );
+			} else {
+				$return[ $key ] = $value;
+			}
+		}
+
+		return $return;
 	}
 }
