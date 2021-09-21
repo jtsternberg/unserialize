@@ -178,6 +178,14 @@ class Unserializer {
 
 		$csv = fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
 
+		$count = is_countable( $values ) ? count( $values ) : 0;
+		if ( $count && isset( $values[ $count - 1 ] ) ) {
+			$keys = array_keys( $values[ $count - 1 ] );
+			if ( ! empty( $keys ) ) {
+				fputcsv( $csv, $keys );
+			}
+		}
+
 		foreach ( array_values( $values ) as $row ) {
 			fputcsv( $csv, $row );
 		}
