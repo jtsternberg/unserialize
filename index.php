@@ -26,7 +26,7 @@ function actionButtons( $unserializer ) {
 	if ( in_array( $unserializer->method, [ 'print_r','var_dump','var_export','json','csv','base64' ], true ) ) : ?>
 		<div class="buttonline">
 			<p>
-				<button onmouseup="window.unserializer.download( document.getElementById('output-formatted').innerText, '<?php echo $unserializer->method; ?>' )" type="button">Download Output</button>&nbsp;
+				<button onmouseup="window.unserializer.download()" type="button">Download Output</button>&nbsp;
 				<button onmouseup="window.unserializer.copy( document.getElementById('output-formatted').innerText )" type="button">Copy Output</button>
 			</p>
 		</div>
@@ -195,6 +195,11 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 		<div id="footer">
 			<a href="https://github.com/jtsternberg/unserialize">Find me on github</a>
 		</div>
+		<script>
+			window.unserializer = {
+				method: <?php echo json_encode( $unserializer->method ); ?>,
+			};
+		</script>
 		<script type="text/javascript" src="assets/script.js?v=<?php echo time(); ?>"></script>
 	</body>
 	</html>

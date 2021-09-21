@@ -1,5 +1,4 @@
 window.unserializer = window.unserializer || {};
-
 ( ( window, document, app, undefined ) => {
 	'use strict';
 
@@ -25,18 +24,23 @@ window.unserializer = window.unserializer || {};
 		throw new Error();
 	};
 
-	app.download = (txt, type) => {
+	app.getOutput = () => {
+		return document.getElementById('output-formatted').innerText;
+	};
+
+	app.download = (txt = app.getOutput(), type = app.method) => {
 		var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(txt);
 		const el = document.createElement('a');
-		var ext = 'json';
-
+		var ext = 'txt';
 		switch( type ) {
-			case 'print_r':
-			case 'var_dump':
-				ext = 'txt';
-				break;
 			case 'var_export':
 				ext = 'php';
+				break;
+			case 'json':
+				ext = 'json';
+				break;
+			case 'csv':
+				ext = 'csv';
 				break;
 		}
 
@@ -48,6 +52,19 @@ window.unserializer = window.unserializer || {};
 		el.remove();
 
 		return fileName;
+	};
+
+	window.onkeydown = function(e){
+		if(e.metaKey && e.keyCode == 'S'.charCodeAt(0)){
+			e.preventDefault();
+			const code = app.getOutput();
+
+			if ( ! code || ! code.length ) {
+				return alert('Nothing to save!')
+			}
+
+			alert('Downloaded: ' + app.download( code ));
+		}
 	};
 
 } )( window, document, window.unserializer );
