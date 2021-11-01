@@ -23,7 +23,7 @@ function checked( $key, $val, $default = false ) {
 }
 
 function actionButtons( $unserializer ) {
-	if ( in_array( $unserializer->method, [ 'print_r','var_dump','var_export','json','csv','base64' ], true ) ) : ?>
+	if ( in_array( $unserializer->method, [ 'print_r','var_dump','var_export','json','csv','urlencode','base64' ], true ) ) : ?>
 		<div class="buttonline">
 			<p>
 				<button onmouseup="window.unserializer.download()" type="button">Download Output</button>&nbsp;
@@ -82,6 +82,12 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 										</label>
 									</span>
 									<span class="option">
+										<label for="input-urlencode">
+											<input type="radio" name="input-type" value="urlencode" id="input-urlencode"<?php checked( 'urlencode', $data->get( 'input-type' ), true ); ?>>
+											Form URL Encoded
+										</label>
+									</span>
+									<span class="option">
 										<label for="input-JSON">
 											<input type="radio" name="input-type" value="JSON" id="input-JSON"<?php checked( 'JSON', $data->get( 'input-type' ) ); ?>>
 											JSON
@@ -104,7 +110,7 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 						<textarea onfocus="this.select()" name="input" id="input"><?php echo $input; ?></textarea>
 					</div>
 					<div class="optionsline clear-left">
-						<label class="i-label">Output:</label>&nbsp;
+						<p><label class="i-label">Output:</label></p>
 						<small>
 							<span class="types">
 								<span class="option">
@@ -129,6 +135,12 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 									<label for="method-JSON" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="JSON" id="method-JSON"<?php checked( 'JSON', $data->get( 'method' ) ); ?>>
 										JSON
+									</label>
+								</span>
+								<span class="option">
+									<label for="method-urlencode" onmouseup="this.querySelector('input').click()">
+										<input type="radio" name="method" value="urlencode" id="method-urlencode"<?php checked( 'urlencode', $data->get( 'method' ) ); ?>>
+										URL Encoded
 									</label>
 								</span>
 								<span class="option">

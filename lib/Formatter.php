@@ -21,6 +21,10 @@ class Formatter {
 					case 'json':
 						$input = serialize( json_decode( $input, true ) );
 						break;
+					case 'urlencode':
+						mb_parse_str( $input, $input );
+						$input = serialize( $input );
+						break;
 					case 'yaml':
 						$input = serialize( Yaml::parse( $input ) );
 						break;

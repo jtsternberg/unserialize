@@ -98,6 +98,9 @@ class Unserializer {
 				case 'csv':
 					$this->formatted = $this->toCSV();
 					break;
+				case 'urlencode':
+					$this->formatted = $this->urlencode();
+					break;
 				case 'krumo':
 					$this->formatted = $this->krumo();
 					break;
@@ -192,6 +195,10 @@ class Unserializer {
 		rewind( $csv );
 
 		return stream_get_contents( $csv );
+	}
+
+	public function urlencode() {
+		return http_build_query( $this->unserialized );
 	}
 
 	public function krumo() {

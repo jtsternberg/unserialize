@@ -102,6 +102,10 @@ p {
 	vertical-align:top;
 }
 
+.option {
+	display: inline-block;
+}
+
 .types label {
 	margin-right: 11px;
 	margin-left: 1px;
