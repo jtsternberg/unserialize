@@ -101,6 +101,9 @@ class Unserializer {
 				case 'urlencode':
 					$this->formatted = $this->urlencode();
 					break;
+				case 'serialize':
+					$this->formatted = $this->serialize();
+					break;
 				case 'krumo':
 					$this->formatted = $this->krumo();
 					break;
@@ -199,6 +202,10 @@ class Unserializer {
 
 	public function urlencode() {
 		return http_build_query( $this->unserialized );
+	}
+
+	public function serialize() {
+		return @serialize( $this->unserialized );
 	}
 
 	public function krumo() {

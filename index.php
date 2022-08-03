@@ -23,7 +23,7 @@ function checked( $key, $val, $default = false ) {
 }
 
 function actionButtons( $unserializer ) {
-	if ( in_array( $unserializer->method, [ 'print_r','var_dump','var_export','json','csv','urlencode','base64' ], true ) ) : ?>
+	if ( in_array( $unserializer->method, [ 'print_r','var_dump','var_export','json','csv','urlencode','serialize','base64' ], true ) ) : ?>
 		<div class="buttonline">
 			<p>
 				<button onmouseup="window.unserializer.download()" type="button">Download Output</button>&nbsp;
@@ -144,6 +144,12 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 									</label>
 								</span>
 								<span class="option">
+									<label for="method-serialize" onmouseup="this.querySelector('input').click()">
+										<input type="radio" name="method" value="serialize" id="method-serialize"<?php checked( 'serialize', $data->get( 'method' ) ); ?>>
+										Serialized
+									</label>
+								</span>
+								<span class="option">
 									<label for="method-CSV" onmouseup="this.querySelector('input').click()">
 										<input type="radio" name="method" value="CSV" id="method-CSV"<?php checked( 'CSV', $data->get( 'method' ) ); ?>>
 										CSV
@@ -187,7 +193,7 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 					</div>
 					<div class="buttonline">
 						<p>
-							<button onmouseup="this.click()" type="submit" id="submit">Unserialize</button>
+							<button onmouseup="this.click()" type="submit" id="submit">Convert</button>
 						</p>
 					</div>
 					<?php actionButtons( $unserializer ); ?>
