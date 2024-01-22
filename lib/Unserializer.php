@@ -41,7 +41,7 @@ class Unserializer {
 
 	public function __construct( $input, $method ) {
 		$this->input  = $input;
-		$this->method = strtolower( $method );
+		$this->method = strtolower( $method ?: '' );
 		if ( $this->input ) {
 			$this->unserialized = self::maybeUnserialize( $this->input );
 		}
