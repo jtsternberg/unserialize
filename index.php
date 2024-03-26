@@ -100,6 +100,12 @@ $input = htmlspecialchars( $input, ENT_QUOTES, 'UTF-8' );
 										</label>
 									</span>
 									<span class="option">
+										<label for="input-CSV-headers">
+											<input type="radio" name="input-type" value="CSV-headers" id="input-CSV-headers"<?php checked( 'CSV-headers', $data->get( 'input-type' ) ); ?>>
+											CSV w/ Headers
+										</label>
+									</span>
+									<span class="option">
 										<label for="input-yaml">
 											<input type="radio" name="input-type" value="yaml" id="input-yaml"<?php checked( 'yaml', $data->get( 'input-type' ) ); ?>>
 											Yaml

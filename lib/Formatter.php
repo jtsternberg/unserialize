@@ -40,6 +40,35 @@ class Formatter {
 						}
 						$input = $csv;
 						break;
+					case 'csv-headers':
+						$tabs  = strpos($input, "\t");
+						$delim = false !== $tabs ? "\t" : ',';
+						$fp    = fopen('php://temp', 'r+');
+						fputs($fp, $input);
+						rewind($fp);
+						$csv = [];
+						$headers = [];  // Array to hold the headers
+						$firstRow = true;
+						while (($data = fgetcsv($fp, 0, $delim)) !== FALSE) {
+							if ($firstRow) {
+								$headers = $data;
+								$firstRow = false;
+							} else {
+								// Ensure the number of elements in the row matches the number of headers
+								$dataCount = count($data);
+								$headerCount = count($headers);
+								if ($dataCount < $headerCount) {
+										// Pad the row with empty strings
+										$data = array_pad($data, $headerCount, '');
+								} elseif ($dataCount > $headerCount) {
+										// Truncate the row to match the number of headers
+										$data = array_slice($data, 0, $headerCount);
+								}
+								$csv[] = array_combine($headers, $data);  // Combine headers with data
+							}
+						}
+						$input = $csv;
+						break;
 				}
 			}
 		}
